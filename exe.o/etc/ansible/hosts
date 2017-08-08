@@ -1,0 +1,6 @@
+[mech]
+mech-02.cloud.univalle.edu.co
+
+[blades]
+uvcluster-[01:08].cloud.univalle.edu.co
+uvcluster-[11:13].cloud.univalle.edu.co

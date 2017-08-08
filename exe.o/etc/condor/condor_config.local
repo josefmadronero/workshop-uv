@@ -1,0 +1,179 @@
+##  What machine is your central manager?
+CONDOR_HOST = condor-headnode.cloud.univalle.edu.co
+
+##  Mail parameters:
+##  When something goes wrong with condor at your site, who should get
+##  the email?
+CONDOR_ADMIN = root@condor-headnode.cloud.univalle.edu.co
+
+##  Network domain parameters:
+##  Internet domain of machines sharing a common UID space.  If your
+##  machines don't share a common UID space, set it to 
+##  UID_DOMAIN = $(FULL_HOSTNAME)
+##  to specify that each machine has its own UID space.
+UID_DOMAIN = cloud.univalle.edu.co
+
+##  Internet domain of machines sharing a common file system.
+##  If your machines don't use a network file system, set it to
+##  FILESYSTEM_DOMAIN = $(FULL_HOSTNAME)
+##  to specify that each machine has its own file system. 
+FILESYSTEM_DOMAIN = cloud.univalle.edu.co
+
+##  The user/group ID <uid>.<gid> of the "Condor" user. 
+##  (this can also be specified in the environment)
+##  Note: the CONDOR_IDS setting is ignored on Win32 platforms
+CONDOR_IDS = 1001.1001
+
+##  Condor needs to create a few lock files to synchronize access to
+##  various log files.  Because of problems we had with network
+##  filesystems and file locking over the years, we HIGHLY recommend
+##  that you put these lock files on a local partition on each
+##  machine.  If you don't have your LOCAL_DIR on a local partition,
+##  be sure to change this entry.  Whatever user (or group) condor is
+##  running as needs to have write access to this directory.  If
+##  you're not running as root, this is whatever user you started up
+##  the condor_master as.  If you are running as root, and there is a
+##  condor account, it is probably condor.  Otherwise, it is whatever
+##  you've set in the CONDOR_IDS environment variable.  See the Admin
+##  manual for details on this.
+LOCK = /tmp/condor-lock.0.261282976324768
+
+DAEMON_LIST = COLLECTOR, MASTER, NEGOTIATOR,SCHEDD,SHARED_PORT
+
+##  Java parameters:
+##  If you would like this machine to be able to run Java jobs,
+##  then set JAVA to the path of your JVM binary.  If you are not
+##  interested in Java, there is no harm in leaving this entry
+##  empty or incorrect.
+JAVA = /usr/bin/java
+JAVA_MAXHEAP_ARGUMENT = -Xmx
+
+##### VALORES AGREGADOS POR install.bash el dia: 2014-10-16 20:48:41 #####
+# Equipos que pueden enviar tareas
+ALLOW_WRITE=*.cloud.univalle.edu.co,192.168.*,172.17.*,*.netlab.eisc.univalle.edu.co
+ALLOW_WRITE=$(ALLOW_WRITE),*.lascilab.eisc.univalle.edu.co,*.eisc.univalle.edu.co
+ALLOW_WRITE=$(ALLOW_WRITE),*.univalle.edu.co,$(FULL_HOSTNAME)
+
+#ALLOW_READ=*.cloud.univalle.edu.co,192.168.*,172.17.*,*.netlab.eisc.univalle.edu.co
+#ALLOW_READ=$(ALLOW_READ),*.eisc.univalle.edu.co
+ALLOW_READ=$(ALLOW_READ),*.univalle.edu.co
+NETWORK_INTERFACE=192.168.28.105
+UNUSED_CLAIM_TIMEOUT = 0
+MPI_CONDOR_RSH_PATH = $(LIBEXEC)
+ALTERNATE_STARTER_2 = $(SBIN)/condor_starter
+STARTER_2_IS_DC = TRUE
+SHADOW_MPI = $(SBIN)/condor_shadow
+
+# CCB
+#CCB_ADDRESS = 192.168.28.105
+#PRIVATE_NETWORK_NAME = cloud.univalle.edu.co
+PRIVATE_NETWORK_NAME = univalle.edu.co
+COLLECTOR.MAX_FILE_DESCRIPTORS = 20000
+
+# Restrict port usage to ports between 9617 and 9620. 9618 it's collector's port.
+#LOWPORT=9617
+#HIGHPORT=9620
+USE_SHARED_PORT = True
+SHARED_PORT_ARGS = -p 443
+COLLECTOR_USES_SHARED_PORT=False
+#COLLECTOR_HOST = $(CONDOR_HOST):9620?sock=collector
+
+# Usuarios con permisos de administrador en la cola de tareas:
+QUEUE_SUPER_USERS=edza,vagrant
+
+# Por defecto solo se guardan 2 backups del history cada uno de 20MB.
+# Se cambia a 100 archivos de 20MB
+ENABLE_HISTORY_ROTATION = True
+MAX_HISTORY_LOG = 20000000
+MAX_HISTORY_ROTATIONS=100
+
+# Enable logging for CondorView
+#POOL_HISTORY_DIR=/opt/condor806/CondorView
+#KEEP_POOL_HISTORY=True
+
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION=False
+# DEFRAG Machines
+# http://research.cs.wisc.edu/htcondor/manual/v8.4/3_5Policy_Configuration.html#sec:SMP-defrag
+#DAEMON_LIST = $(DAEMON_LIST) DEFRAG
+# Defragmentar cada hora
+#DEFRAG_INTERVAL = 3600
+# Cada hora defragamentar 1 nodo.
+#DEFRAG_DRAINING_MACHINES_PER_HOUR = 1.0
+# No defragmentar si hay 4 nodos sin slots.
+#DEFRAG_MAX_WHOLE_MACHINES = 2
+# No defragmentar si hay 2 nodos defragmentando
+#DEFRAG_MAX_CONCURRENT_DRAINING = 1
+
+## Tunning
+# Solicitar finalizacion suave de tareas.
+#DEFRAG_SCHEDULE = graceful
+# Defragmentar segun cantidad de nucleos (mas grandes con mas slots primero)
+#DEFRAG_RANK = ifThenElse(Cpus >= 8, -10, (TotalCpus - Cpus)/(8.0 - Cpus))
+# Definir como nodo completo, cualquiera con 8 o mas cores.
+#DEFRAG_WHOLE_MACHINE_EXPR = ((Cpus == TotalCpus) || (Cpus >= 8)) && StartJobs =?= True
+# Prueba: Evitar que se defragmenten los 2 nodos indicados.
+#DEFRAG_REQUIREMENTS=(Machine!="uvcluster-01.cloud.univalle.edu.co" && Machine!="uvcluster-07.cloud.univalle.edu.co" && Machine!="uvcluster-13.cloud.univalle.edu.co" && Machine!="cancerbero.lascilab.eisc.univalle.edu.co")
+
+## UV NAT
+# Node IP outside NAT/IP del nodo fuera del NAT
+#TCP_FORWARDING_HOST = 181.118.153.207
+# Nueva IP por cambio de ISP en 2016-12-28
+TCP_FORWARDING_HOST = 138.122.201.207
+
+# Node IP inside NAT/IP del nodo en el NAT
+PRIVATE_NETWORK_INTERFACE = 192.168.28.105
+PRIVATE_NETWORK_NAME = univalle.edu.co
+
+## Para EC2
+ALLOW_WRITE = $(ALLOW_WRITE), *.amazonaws.com
+UPDATE_STARTD_AD=$(ALLOW_WRITE)
+#UPDATE_SCHEDD_AD=$(ALLOW_WRITE)
+ALLOW_ADVERTISE_MASTER = $(ALLOW_WRITE)
+ALLOW_ADVERTISE_STARTD = $(ALLOW_WRITE)
+#ALLOW_ADVERTISE_SCHEDD = $(ALLOW_WRITE)
+
+#SEC_DEFAULT_AUTHENTICATION=NEVER
+#SEC_DEFAULT_NEGOTIATION=NEVER
+#SEC_DEFAULT_AUTHENTICATION=PREFERRED
+#SEC_DEFAULT_NEGOTIATION=PREFERRED
+
+ALLOW_READ=$(ALLOW_READ),*.compute.amazonaws.com
+#ALLOW_WRITE = $(ALLOW_WRITE), condor_pool@*/*
+#SEC_DEFAULT_NEGOTIATION = OPTIONAL
+#SEC_DEFAULT_AUTHENTICATION = PREFERRED
+#SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS, FS_REMOTE, ANONYMOUS
+#SEC_PASSWORD_FILE = /etc/condor/poolpass
+# Ensures that you can submit jobs.
+#QUEUE_SUPER_USERS = condor, condor_pool
+#SEC_DEFAULT_ENCRYPTION = REQUIRED
+#SEC_DEFAULT_INTEGRITY = REQUIRED
+
+#ALLOW_DAEMON = condor_pool@$(UID_DOMAIN)/*.cs.wisc.edu,condor@$(UID_DOMAIN)/$(IP_ADDRESS),condor@amazonaws.com,condor@lascilab.eisc.univalle.edu.co
+
+### Depuracion
+#NEGOTIATOR_DEBUG = D_FULLDEBUG D_COMMAND D_SECURITY
+#COLLECTOR_DEBUG = D_FULLDEBUG D_COMMAND D_SECURITY
+#STARTD_DEBUG = D_FULLDEBUG D_COMMAND D_SECURITY
+#SCHEDD_DEBUG = D_FULLDEBUG D_COMMAND D_SECURITY
+
+## Seguridad
+SEC_DEFAULT_AUTHENTICATION = OPTIONAL
+SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS, $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+ALLOW_DAEMON = condor_pool@*
+SEC_PASSWORD_FILE = /etc/condor/poolpass
+SEC_DAEMON_INTEGRITY = REQUIRED
+SEC_CLIENT_AUTHENTICATION_METHODS = PASSWORD, FS, $(SEC_CLIENT_AUTHENTICATION_METHODS)
+
+# Flock to
+FLOCK_TO = grid.unitecnologica.edu.co,200.21.98.210
+FLOCK_COLLECTOR_HOSTS = $(FLOCK_TO)
+FLOCK_NEGOTIATOR_HOSTS = $(FLOCK_TO)
+ALLOW_NEGOTIATOR = $(COLLECTOR_HOST),$(FLOCK_NEGOTIATOR_HOSTS),$(CONDOR_HOST)
+# Flock From
+FLOCK_FROM=$(FLOCK_TO),200.21.98.210
+ALLOW_WRITE = $(ALLOW_WRITE),$(FLOCK_TO),*.unitecnologica.edu.co
+ALLOW_ADVERTISE_SCHEDD = $(FLOCK_FROM),$(CONDOR_HOST),$(ALLOW_WRITE)
+ALLOW_ADVERTISE_MASTER = $(ALLOW_ADVERTISE_SCHEDD) 
+#ALLOW_ADVERTISE_STARTD = $(ALLOW_ADVERTISE_SCHEDD)
+UPDATE_SCHEDD_AD = $(UPDATE_SCHEDD_AD),$(FLOCK_FROM)
+UPDATE_SUBMITTOR_AD = $(UPDATE_SUBMITTOR_AD),$(FLOCK_FROM)

@@ -1,0 +1,18 @@
+TARGETS = open-vm-tools rsyslog uuidd lxcfs lvm2-lvmetad condor lvm2-lvmpolld lxd killprocs apport cgroupfs-mount dnsmasq irqbalance mdadm atd single ssh acpid dbus docker rsync cron plymouth ondemand grub-common rc.local
+INTERACTIVE =
+cgroupfs-mount: rsyslog
+dnsmasq: rsyslog
+irqbalance: rsyslog
+mdadm: rsyslog
+atd: rsyslog
+single: killprocs
+ssh: rsyslog
+acpid: rsyslog
+dbus: rsyslog
+docker: rsyslog cgroupfs-mount
+rsync: rsyslog dnsmasq
+cron: rsyslog dnsmasq
+plymouth: open-vm-tools cgroupfs-mount rsyslog uuidd lxcfs lvm2-lvmetad dnsmasq condor docker lvm2-lvmpolld irqbalance mdadm lxd atd ssh rsync apport acpid dbus cron
+ondemand: open-vm-tools cgroupfs-mount rsyslog uuidd lxcfs lvm2-lvmetad dnsmasq condor docker lvm2-lvmpolld irqbalance mdadm lxd atd ssh rsync apport acpid dbus cron
+grub-common: open-vm-tools cgroupfs-mount rsyslog uuidd lxcfs lvm2-lvmetad dnsmasq condor docker lvm2-lvmpolld irqbalance mdadm lxd atd ssh rsync apport acpid dbus cron
+rc.local: open-vm-tools cgroupfs-mount rsyslog uuidd lxcfs lvm2-lvmetad dnsmasq condor docker lvm2-lvmpolld irqbalance mdadm lxd atd ssh rsync apport acpid dbus cron

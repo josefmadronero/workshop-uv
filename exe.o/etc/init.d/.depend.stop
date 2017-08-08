@@ -1,0 +1,16 @@
+TARGETS = unattended-upgrades open-vm-tools uuidd lxcfs lvm2-lvmetad condor lvm2-lvmpolld lxd dnsmasq resolvconf irqbalance mdadm atd ufw docker plymouth urandom open-iscsi cgroupfs-mount iscsid sendsigs rsyslog umountnfs.sh hwclock.sh rpcbind networking umountfs cryptdisks cryptdisks-early umountroot mdadm-waitidle halt reboot
+cgroupfs-mount: docker
+iscsid: open-iscsi
+sendsigs: open-vm-tools iscsid cgroupfs-mount uuidd lxcfs dnsmasq condor docker open-iscsi unattended-upgrades irqbalance mdadm plymouth lxd atd
+rsyslog: cgroupfs-mount dnsmasq docker irqbalance mdadm sendsigs atd
+umountnfs.sh: open-vm-tools cgroupfs-mount uuidd lxcfs dnsmasq condor docker unattended-upgrades irqbalance sendsigs plymouth lxd rsyslog atd
+hwclock.sh: uuidd rsyslog atd
+rpcbind: umountnfs.sh
+networking: iscsid dnsmasq rpcbind condor open-iscsi umountnfs.sh
+umountfs: open-vm-tools iscsid cgroupfs-mount urandom networking uuidd lxcfs lvm2-lvmetad dnsmasq resolvconf hwclock.sh rpcbind condor docker open-iscsi lvm2-lvmpolld unattended-upgrades umountnfs.sh irqbalance mdadm plymouth lxd atd
+cryptdisks: umountfs
+cryptdisks-early: cryptdisks umountfs
+umountroot: cryptdisks cryptdisks-early umountfs
+mdadm-waitidle: umountroot
+halt: mdadm-waitidle umountroot
+reboot: mdadm-waitidle umountroot

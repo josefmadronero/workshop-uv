@@ -1,0 +1,28 @@
+127.0.0.1	localhost
+192.168.28.105	condor-headnode.cloud.univalle.edu.co	condor-headnode
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+# Master HTCondor
+192.168.28.105 condor-headnode.cloud.univalle.edu.co condor-headnode
+# Blades
+192.168.28.50 uvcluster-01.cloud.univalle.edu.co uvcluster-01
+192.168.28.51 uvcluster-02.cloud.univalle.edu.co uvcluster-02
+192.168.28.52 uvcluster-03.cloud.univalle.edu.co uvcluster-03
+192.168.28.53 uvcluster-04.cloud.univalle.edu.co uvcluster-04
+192.168.28.54 uvcluster-05.cloud.univalle.edu.co uvcluster-05
+192.168.28.55 uvcluster-06.cloud.univalle.edu.co uvcluster-06
+192.168.28.56 uvcluster-07.cloud.univalle.edu.co uvcluster-07
+192.168.28.57 uvcluster-08.cloud.univalle.edu.co uvcluster-08
+192.168.28.58 uvcluster-09.cloud.univalle.edu.co uvcluster-09
+192.168.28.59 uvcluster-10.cloud.univalle.edu.co uvcluster-10
+192.168.28.64 uvcluster-11.cloud.univalle.edu.co uvcluster-11
+192.168.28.65 uvcluster-12.cloud.univalle.edu.co uvcluster-12
+192.168.28.66 uvcluster-13.cloud.univalle.edu.co uvcluster-13
+# EISC
+192.168.131.72  cancerbero.lascilab.eisc.univalle.edu.co cancerbero
+# Mech
+192.168.28.61   mech-02.cloud.univalle.edu.co           mech-02
